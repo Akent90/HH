@@ -1,0 +1,16 @@
+{
+    "name": "heartland-harvest",
+    "version": "1.0.0",
+    "scripts": {
+      "install-all": "npm run install-server && npm run install-client",
+      "install-server": "cd Server && npm install",
+      "install-client": "cd Client && npm install",
+      "start": "concurrently \"npm run start-server\" \"npm run start-client\"",
+      "start-server": "cd Server && npm start",
+      "start-client": "cd Client && npm start",
+      "deploy": "git push heroku main",
+      "heroku-postbuild": "cd Client && npm install && npm run build"
+    },
+    "private": true
+  }
+  
