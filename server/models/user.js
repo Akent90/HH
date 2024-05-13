@@ -2,28 +2,30 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
+    firstName: { type: String, required: true, trim: true },
+    lastName: { type: String, required: true, trim: true },
     email: {
         type: String,
         required: true,
         unique: true,
-        match: [/.+\@.+\..+/, 'Please fill a valid email address'] // Email validation
+        match: [/.+\@.+\..+/, 'Please fill a valid email address']
     },
-    password: { type: String, required: true },
-    role: { type: String, default: 'customer' }, // Default role
-    cart: [{
-        product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
-        quantity: { type: Number, required: true }
-    }]
+    password: { type: String, required: true, minlength: 5 },
+    orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }]
 });
 
-// Password hash middleware.
 userSchema.pre('save', async function(next) {
-    if (!this.isModified('password')) return next();
-    this.password = await bcrypt.hash(this.password, 8);
+    if (this.isNew || this.isModified('password')) {
+        this.password = await bcrypt.hash(this.password, 10);
+    }
     next();
 });
 
-const User = mongoose.model('User', userSchema);
+userSchema.methods.isCorrectPassword = async function(password) {
+    return bcrypt.compare(password, this.password);
+};
 
+const User = mongoose.model('User', userSchema);
 module.exports = User;
+
 
