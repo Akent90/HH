@@ -6,6 +6,8 @@ const path = require('path');
 const { typeDefs, resolvers } = require('./schemas');
 const connectDB = require('./config/connection');
 const { authMiddleware } = require('./utils/auth');
+const rateLimit = require('express-rate-limit');
+const logger = require('./config/logger'); 
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -17,6 +19,19 @@ const startApolloServer = async () => {
 
     app.use(express.urlencoded({ extended: false }));
     app.use(express.json());
+
+    // Rate limiting
+    const limiter = rateLimit({
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 100 // limit each IP to 100 requests per windowMs
+    });
+    app.use(limiter);
+
+    // Logging
+    app.use((req, res, next) => {
+      logger.info(`${req.method} ${req.url}`);
+      next();
+    });
 
     app.use(async (req, res, next) => {
       req = await authMiddleware(req);
@@ -53,3 +68,4 @@ const startApolloServer = async () => {
 };
 
 startApolloServer();
+

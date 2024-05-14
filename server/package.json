@@ -4,7 +4,9 @@
   "description": "Backend for Heartland Harvest E-commerce Site",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "NODE_ENV=production node server.js",
+    "dev": "NODE_ENV=development nodemon server.js",
+    "test": "NODE_ENV=testing node server.js",
     "watch": "nodemon server.js"
   },
   "dependencies": {
@@ -17,12 +19,13 @@
     "stripe": "^8.183.0",
     "@elastic/elasticsearch": "^8.0.0",
     "dotenv": "^16.0.0",
-    "express-rate-limit": "^6.3.0",  
-    "winston": "^3.7.2"  
+    "express-rate-limit": "^6.3.0",
+    "winston": "^3.7.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.3"
   }
 }
+
 
   
