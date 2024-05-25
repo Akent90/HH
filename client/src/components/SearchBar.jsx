@@ -12,7 +12,7 @@ const SearchBar = () => (
           <SearchBox autocompleteSuggestions={true} />
           {wasSearched && (
             <div>
-              <Results titleField="name" descriptionField="description" />
+              <Results titleField="name" urlField="imageUrl" />
               <Paging />
             </div>
           )}
@@ -23,4 +23,5 @@ const SearchBar = () => (
 );
 
 export default SearchBar;
+
 
