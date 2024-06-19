@@ -8,7 +8,7 @@ const orderSchema = new mongoose.Schema({
     }],
     status: { type: String, default: 'Pending', required: true },
     total: { type: Number, required: true }
-}, { timestamps: true });  // Adds createdAt and updatedAt fields automatically
+}, { timestamps: true }); 
 
 const Order = mongoose.model('Order', orderSchema);
 module.exports = Order;
