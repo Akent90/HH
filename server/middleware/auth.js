@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
-const secret = process.env.JWT_SECRET || 'your_secret_key';
+const secret = process.env.JWT_SECRET || 'enter_key_here';
 
 const authMiddleware = async (req) => {
   const token = req.headers.authorization || '';
@@ -21,7 +21,6 @@ const authMiddleware = async (req) => {
   return req;
 };
 
-// Function to generate JWT token
 const generateToken = (user) => {
   return jwt.sign({ id: user._id }, secret, { expiresIn: '1h' });
 };
