@@ -6,3 +6,4 @@ const orderResolvers = require('./order');
 const resolvers = mergeResolvers([productResolvers, userResolvers, orderResolvers]);
 
 module.exports = resolvers;
+

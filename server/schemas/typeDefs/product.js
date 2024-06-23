@@ -1,27 +1,32 @@
-const { gql } = require('apollo-server-express');
+const { gql } = require('@apollo/server');
 
-const productTypeDefs = gql`
+const typeDefs = gql`
   type Product {
     id: ID!
     name: String!
-    sku: String!
+    description: String
+    imageUrl: String
     price: Float!
-    description: String!
-    stock: Int!
-    categories: [String]!
-    imageUrl: String!
+    stock: Int
+    category: Category!
   }
 
-  extend type Query {
+  type Category {
+    id: ID!
+    name: String!
+  }
+
+  type Query {
     products: [Product]
     product(id: ID!): Product
   }
 
-  extend type Mutation {
-    addProduct(name: String!, sku: String!, price: Float!, description: String!, stock: Int!, categories: [String]!, imageUrl: String!): Product
-    updateProduct(id: ID!, name: String, sku: String, price: Float, description: String, stock: Int, categories: [String], imageUrl: String): Product
-    deleteProduct(id: ID!): Product
+  type Mutation {
+    createProduct(name: String!, description: String, imageUrl: String, price: Float!, stock: Int, categoryId: ID!): Product
+    updateProduct(id: ID!, name: String, description: String, imageUrl: String, price: Float, stock: Int, categoryId: ID): Product
+    deleteProduct(id: ID!): Boolean
   }
 `;
 
-module.exports = productTypeDefs;
+module.exports = typeDefs;
+

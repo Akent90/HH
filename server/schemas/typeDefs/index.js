@@ -6,3 +6,4 @@ const orderTypeDefs = require('./order');
 const typeDefs = mergeTypeDefs([productTypeDefs, userTypeDefs, orderTypeDefs]);
 
 module.exports = typeDefs;
+

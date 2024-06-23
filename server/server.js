@@ -1,19 +1,20 @@
 require('dotenv').config();
 const express = require('express');
-const { ApolloServer } = require('apollo-server-express');
+const { ApolloServer } = require('@apollo/server');
+const { expressMiddleware } = require('@apollo/server/express4');
 const path = require('path');
 const { typeDefs, resolvers } = require('./schemas');
 const connectDB = require('./config/connection');
 const { authMiddleware } = require('./middleware/auth');
 const rateLimit = require('express-rate-limit');
-const logger = require('./config/logger'); 
+const logger = require('./config/logger');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
 
 const startApolloServer = async () => {
   try {
-    await connectDB(); 
+    await connectDB();
     console.log("Database connected successfully.");
 
     app.use(express.urlencoded({ extended: false }));
@@ -21,8 +22,8 @@ const startApolloServer = async () => {
 
     // Rate limiting
     const limiter = rateLimit({
-      windowMs: 15 * 60 * 1000, 
-      max: 100 
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 100 // limit each IP to 100 requests per windowMs
     });
     app.use(limiter);
 
@@ -40,16 +41,12 @@ const startApolloServer = async () => {
     const server = new ApolloServer({
       typeDefs,
       resolvers,
-      context: ({ req }) => ({ user: req.user }) 
     });
 
     await server.start();
-    server.applyMiddleware({ app, path: '/graphql' });
-
-    app.use('/graphql', (req, res, next) => {
-      console.log('Incoming GraphQL request:', req.body);
-      next();
-    });
+    app.use('/graphql', expressMiddleware(server, {
+      context: async ({ req }) => ({ user: req.user })
+    }));
 
     app.use(express.static(path.join(__dirname, '../client/build')));
     
@@ -67,6 +64,7 @@ const startApolloServer = async () => {
 };
 
 startApolloServer();
+
 
 
 
