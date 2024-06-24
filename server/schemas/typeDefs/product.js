@@ -7,26 +7,26 @@ const typeDefs = gql`
     description: String
     imageUrl: String
     price: Float!
-    stock: Int
+    stock: Int!
     category: Category!
   }
-
-  type Category {
-    id: ID!
-    name: String!
-  }
-
-  type Query {
+  
+  extend type Query {
     products: [Product]
     product(id: ID!): Product
   }
 
-  type Mutation {
-    createProduct(name: String!, description: String, imageUrl: String, price: Float!, stock: Int, categoryId: ID!): Product
-    updateProduct(id: ID!, name: String, description: String, imageUrl: String, price: Float, stock: Int, categoryId: ID): Product
-    deleteProduct(id: ID!): Boolean
+  input OrderProductInput {
+    productId: ID!
+    quantity: Int!
+  }
+
+  type OrderProduct {
+    product: Product!
+    quantity: Int!
   }
 `;
 
 module.exports = typeDefs;
+
 
