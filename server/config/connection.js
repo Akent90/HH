@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const connectDB = async () => {
   try {
     const env = process.env.NODE_ENV || 'development';
-    let mongoURI = '';
+    let mongoURI;
 
     switch (env) {
       case 'development':
@@ -17,6 +17,10 @@ const connectDB = async () => {
         break;
       default:
         throw new Error('Unknown environment: ' + env);
+    }
+
+    if (!mongoURI) {
+      throw new Error('Mongo URI is not defined');
     }
 
     const conn = await mongoose.connect(mongoURI, {
