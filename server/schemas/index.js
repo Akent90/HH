@@ -1,12 +1,19 @@
-const { makeExecutableSchema } = require('@graphql-tools/schema');
-const typeDefs = require('./typeDefs');
-const resolvers = require('./resolvers');
+const { mergeTypeDefs } = require('@graphql-tools/merge');
+const baseTypeDefs = require('./base');
+const productTypeDefs = require('./product');
+const userTypeDefs = require('./user');
+const orderTypeDefs = require('./order');
+const categoryTypeDefs = require('./category');
 
-const schema = makeExecutableSchema({
-  typeDefs,
-  resolvers,
-});
+const typeDefs = mergeTypeDefs([
+  baseTypeDefs,
+  productTypeDefs,
+  userTypeDefs,
+  orderTypeDefs,
+  categoryTypeDefs
+]);
 
-module.exports = schema;
+module.exports = typeDefs;
+
 
 
