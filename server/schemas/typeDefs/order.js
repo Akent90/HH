@@ -12,24 +12,27 @@ const typeDefs = gql`
     paymentStatus: String!
   }
 
-  type OrderProduct {
-    product: Product!
-    quantity: Int!
-  }
-
   extend type Query {
     orders: [Order]
     order(id: ID!): Order
   }
 
   extend type Mutation {
-    createOrder(products: [OrderProductInput!]!): Order
+    addOrder(products: [OrderProductInput!]!): Order
+    updateOrder(id: ID!, status: String): Order
+    deleteOrder(id: ID!): Boolean
   }
 
   input OrderProductInput {
-    product: ID!
+    productId: ID!
+    quantity: Int!
+  }
+
+  type OrderProduct {
+    product: Product!
     quantity: Int!
   }
 `;
 
 module.exports = typeDefs;
+
