@@ -1,4 +1,6 @@
 require('dotenv').config();
+console.log('MONGO_URI:', process.env.MONGO_URI);
+// require('dotenv').config({ path: './server/.env' });
 const express = require('express');
 const { ApolloServer } = require('@apollo/server');
 const path = require('path');
@@ -6,27 +8,28 @@ const { typeDefs, resolvers } = require('./schemas');
 const connectDB = require('./config/connection');
 const { authMiddleware } = require('./middleware/auth');
 const rateLimit = require('express-rate-limit');
-const logger = require('./config/logger'); 
+const logger = require('./config/logger');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
 
+// Debug: Print environment variables
+console.log("Environment Variables:", process.env);
+
 const startApolloServer = async () => {
   try {
-    await connectDB(); 
+    await connectDB();
     console.log("Database connected successfully.");
 
     app.use(express.urlencoded({ extended: false }));
     app.use(express.json());
 
-    // Rate limiting
     const limiter = rateLimit({
-      windowMs: 15 * 60 * 1000, 
-      max: 100 
+      windowMs: 15 * 60 * 1000,
+      max: 100
     });
     app.use(limiter);
 
-    // Logging
     app.use((req, res, next) => {
       logger.info(`${req.method} ${req.url}`);
       next();
@@ -40,7 +43,7 @@ const startApolloServer = async () => {
     const server = new ApolloServer({
       typeDefs,
       resolvers,
-      context: ({ req }) => ({ user: req.user }) 
+      context: ({ req }) => ({ user: req.user })
     });
 
     await server.start();
@@ -52,7 +55,7 @@ const startApolloServer = async () => {
     });
 
     app.use(express.static(path.join(__dirname, '../client/build')));
-    
+
     app.get('*', (req, res) => {
       res.sendFile(path.join(__dirname, '../client/build/index.html'));
     });
@@ -67,6 +70,9 @@ const startApolloServer = async () => {
 };
 
 startApolloServer();
+
+
+
 
 
 
