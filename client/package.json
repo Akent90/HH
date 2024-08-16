@@ -15,16 +15,17 @@
     "@apollo/client": "^3.5.10",
     "@stripe/stripe-js": "^1.22.0",
     "@stripe/react-stripe-js": "^1.7.0",
-    "@elastic/search-ui": "^1.0.0",  
-    "@elastic/react-search-ui": "^1.0.0",  
-    "@elastic/react-search-ui-views": "^1.0.0",  
-    "@elastic/search-ui-app-search-connector": "^1.0.0",  
-    "moment": "^2.29.1"  
+    "@elastic/search-ui": "^1.0.0",
+    "@elastic/react-search-ui": "^1.0.0",
+    "@elastic/react-search-ui-views": "^1.0.0",
+    "@elastic/search-ui-app-search-connector": "^1.0.0",
+    "moment": "^2.29.1"
   },
   "devDependencies": {
     "vite": "^3.0.0"
   }
 }
+
 
 
 
