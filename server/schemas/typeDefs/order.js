@@ -18,7 +18,7 @@ const typeDefs = gql`
   }
 
   extend type Mutation {
-    addOrder(products: [OrderProductInput!]!): Order
+    createOrder(products: [OrderProductInput!]!): Order
     updateOrder(id: ID!, status: String): Order
     deleteOrder(id: ID!): Boolean
   }

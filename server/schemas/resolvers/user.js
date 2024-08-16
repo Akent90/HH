@@ -49,7 +49,7 @@ const resolvers = {
       }
       throw new AuthenticationError('Not logged in');
     },
-    addOrder: async (parent, { products }, context) => {
+    createOrder: async (parent, { products }, context) => {
       if (context.user) {
         const order = new Order({ products });
 
