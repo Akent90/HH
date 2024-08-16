@@ -2,7 +2,7 @@ require('dotenv').config();
 console.log('MONGO_URI:', process.env.MONGO_URI);
 const express = require('express');
 const { ApolloServer } = require('@apollo/server');
-const expressMiddleware = require('@apollo/server/express4');
+const { expressMiddleware } = require('@apollo/server/express4');
 const path = require('path');
 const { typeDefs, resolvers } = require('./schemas');
 const connectDB = require('./config/connection');
@@ -43,16 +43,13 @@ const startApolloServer = async () => {
     const server = new ApolloServer({
       typeDefs,
       resolvers,
-      context: ({ req }) => ({ user: req.user })
     });
 
     await server.start();
-    app.use('/graphql', expressMiddleware(server));
 
-    app.use('/graphql', (req, res, next) => {
-      console.log('Incoming GraphQL request:', req.body);
-      next();
-    });
+    app.use('/graphql', expressMiddleware(server, {
+      context: async ({ req }) => ({ user: req.user })
+    }));
 
     app.use(express.static(path.join(__dirname, '../client/build')));
 
@@ -70,7 +67,6 @@ const startApolloServer = async () => {
 };
 
 startApolloServer();
-
 
 
 
