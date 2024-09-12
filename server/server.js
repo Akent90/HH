@@ -1,5 +1,4 @@
 require('dotenv').config();
-console.log('MONGO_URI:', process.env.MONGO_URI);
 const express = require('express');
 const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
@@ -13,7 +12,6 @@ const logger = require('./config/logger');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-// Debug: Print environment variables
 console.log("Environment Variables:", process.env);
 
 const startApolloServer = async () => {
